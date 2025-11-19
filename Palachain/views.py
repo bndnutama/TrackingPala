@@ -46,7 +46,7 @@ def Login_user (request):
                     return redirect ('CustomerDashboard')
         else:
             print ('error')
-    return render (request, 'login/Login.html', context)
+    return render (request, 'Login/Login.html', context)
 
 
 #Show profile
