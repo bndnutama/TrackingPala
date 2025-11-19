@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{title}}</title>
+</head>
+<body>
+    <h2>Produk tersedia untuk {{ Profile.Role|title }}</h2>
+    <div id="pesan"></div>
+
+<ul>
+    {% for p in Product_List %}
+    <li id="produk-{{ p.id }}">
+        <strong>{{ p.Varietas }}</strong> (oleh: 
+     {% if p.Pemilik.Role == 'farmer' %}
+        {{ p.Pemilik.Farmer.Nama }}
+      {% elif p.Pemilik.Role == 'trader' %}
+        {{ p.Pemilik.Trader.Nama }}
+      {% elif p.Pemilik.Role == 'factory' %}
+        {{ p.Pemilik.Factory.Factory_Name }}
+    {% elif p.Pemilik.Role == 'distributor'%}
+        {{p.Pemilik.Distributor.Name}}
+      {% else %}
+        {{ p.Pemilik.username }}  {% endif %} - {{ p.Pemilik.Role }})<br>
+        Kadar_Air: {{ p.Kadar_Air }}% | Volume: <span class="Volume">{{ p.Volume }} Kg</span>
+         <input type="number" id="jumlah-{{ p.id }}" value="1" min="1" max="{{ p.Volume }}" style="width:60px;">
+        <button onclick="BuyingProduct('{{ p.id}}')">Beli</button>
+    </li>
+    {% empty %}
+    <li>Tidak ada produk tersedia.</li>
+    {% endfor %}
+</ul>
+<script>
+function BuyingProduct(id) {
+    const jumlah = document.getElementById(`jumlah-${id}`).value;
+
+    fetch(`/Beli/${id}/`, {
+        method: "POST",
+        headers: {
+            "X-CSRFToken": getCookie('csrftoken'),
+            "Content-Type": "application/x-www-form-urlencoded",
+        },
+        body: new URLSearchParams({
+            "jumlah": jumlah
+        })
+    })
+    .then(response => response.json())
+    .then(data => {
+        const pesanDiv = document.getElementById("pesan");
+        pesanDiv.innerHTML = data.pesan;
+        pesanDiv.style.color = data.success ? "green" : "red";
+
+        if (data.success) {
+            const stokEl = document.querySelector(`#produk-${id} .Volume`);
+            if (stokEl) stokEl.textContent = data.stok + " Kg";
+        }
+    });
+}
+
+function getCookie(name) {
+    let cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+        const cookies = document.cookie.split(';');
+        for (let i = 0; i < cookies.length; i++) {
+            const cookie = cookies[i].trim();
+            if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
+        }
+    }
+    return cookieValue;
+}
+</script>

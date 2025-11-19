@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ title|default:"Daftar Produk" }}</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700;900&display=swap" rel="stylesheet">
+    
+    <style>
+        /* Variabel Warna Coklat Konsisten */
+        :root {
+            --primary-color: #a37f5d; 
+            --primary-hover: #8c6a4e; 
+            --dark-color: #755646; 
+            --light-bg: #f7f3ed; 
+            --card-bg: #ffffff; 
+            --border-color: #e0d5c9; 
+            --highlight-color: #5d4037; 
+            --accent-red: #cc524a; 
+        }
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background-color: var(--light-bg);
+            color: var(--dark-color);
+            margin: 0;
+            padding: 40px 20px;
+        }
+        .product-list-container {
+            max-width: 750px;
+            margin: 0 auto;
+            background-color: var(--card-bg);
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 8px 20px rgba(117, 86, 70, 0.1);
+        }
+        h2 {
+            color: var(--dark-color);
+            border-bottom: 3px solid var(--primary-color);
+            padding-bottom: 10px;
+            margin-top: 0;
+            text-align: center;
+            font-weight: 700;
+            font-size: 2em;
+        }
+        ul {
+            list-style: none;
+            padding: 0;
+            margin-top: 30px;
+        }
+        li {
+            background-color: #fffaf7; 
+            margin-bottom: 15px;
+            padding: 15px 20px;
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+            
+            display: flex;
+            justify-content: space-between;
+            align-items: center; /* Memastikan konten LI rata tengah vertikal */
+            flex-wrap: wrap;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        li:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 10px rgba(163, 127, 93, 0.2);
+        }
+        .product-info {
+            font-size: 1.1em;
+            font-weight: 600;
+            color: var(--highlight-color);
+            flex-grow: 1;
+            padding-right: 20px;
+        }
+        .product-info span {
+            color: var(--accent-red); 
+            font-weight: 700;
+        }
+        
+        /* --- Aksi & QR Section (Perbaikan Utama) --- */
+        .action-section {
+            /* Kunci: Memastikan semua elemen di bagian aksi sejajar */
+            display: flex;
+            align-items: center; 
+            gap: 15px;
+            /* 🟢 Perbaikan: Memastikan QR dan tombol sejajar jika ada banyak elemen */
+            height: 84px; /* Set tinggi berdasarkan tinggi QR (80px) + padding/border */
+        }
+        .qr-section {
+             display: flex;
+             align-items: center; /* Tengah vertikal di dalam QR Section */
+             gap: 15px;
+        }
+        
+        .qr-section img {
+            width: 80px; 
+            height: 80px;
+            border: 2px solid var(--card-bg);
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            border-radius: 4px;
+        }
+        button, .action-link {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 8px 15px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: background-color 0.2s;
+            text-decoration: none;
+            display: inline-block;
+            text-align: center;
+            font-size: 0.95em;
+            /* 🟢 Perbaikan: Mengatur margin vertikal tombol agar rata tengah */
+            margin: 0; 
+        }
+        button:hover, .action-link:hover {
+            background-color: var(--primary-hover);
+        }
+        
+        /* --- Pesan Kosong --- */
+        .empty-message {
+            text-align: center;
+            padding: 20px;
+            background-color: #fff8e1; 
+            color: var(--dark-color);
+            border: 1px solid #ffeeba;
+            border-radius: 8px;
+            font-weight: 500;
+        }
+    </style>
+</head>
+<body>
+
+<div class="product-list-container">
+    <h2>Produk Anda</h2>
+
+    <ul>
+    {% for p in Products %}
+        <li>
+            <div class="product-info">
+                {{ p.Varietas }} (<span style="color: var(--accent-red);">{{ p.Volume }} Kg</span>)
+            </div>
+
+            <div class="action-section">
+                {% if user.Role == "farmer" %}
+                    {% if p.QR_Code %}
+                        <div class="qr-section">
+                            <img src="{{ p.QR_Code.url }}" alt="QR {{ p.Varietas }}" title="QR Code Produk" width="80" height="80">
+                            <button onclick="printQR('{{ p.QR_Code.url }}')">Cetak QR</button>
+                        </div>
+                    {% endif %}
+                
+                {% elif user.Role == "factory" %}
+                    <a href="{% url 'factory_process_input' p.id %}" class="action-link">Input Proses Factory</a>
+                
+                {% elif user.Role == 'customer' %}
+                    <a href="#" class="action-link" style="background-color: #388e3c;">Beli Produk</a>
+                {% endif %}
+            </div>
+        </li>
+    {% empty %}
+        <li class="empty-message">Belum ada produk untuk ditampilkan.</li>
+    {% endfor %}
+    </ul>
+
+</div>
+
+<script>
+function printQR(url) {
+    var w = window.open('', '_blank', 'width=400,height=400');
+    w.document.write(`
+        <html>
+        <head>
+            <title>Cetak QR</title>
+            <style>
+                body {
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    height: 100vh;
+                    margin: 0;
+                }
+                img {
+                    width: 300px;
+                    height: auto;
+                }
+            </style>
+        </head>
+        <body>
+            <img src="` + url + `" />
+            <script>window.onload = function() { window.print(); };<\/script>
+        </body>
+        </html>
+    `);
+    w.document.close();
+}
+</script>
+
+</body>
+</html>

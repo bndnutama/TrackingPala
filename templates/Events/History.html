@@ -1,0 +1,25 @@
+<div style="border: 1px solid #ddd; padding: 20px; border-radius: 8px; background-color: #f9f9f9; max-width: 600px; margin: 20px auto; font-family: Arial, sans-serif;">
+    <h2 style="color: #333; border-bottom: 2px solid #007bff; padding-bottom: 10px; margin-top: 0;">Riwayat Perjalanan Produk</h2>
+    <ul style="list-style: none; padding: 0;">
+    {% for r in riwayat %}
+      <li style="background-color: #ffffff; margin-bottom: 15px; padding: 15px; border-radius: 6px; box-shadow: 0 2px 4px rgba(0,0,0,0.05);">
+        <div style="font-size: 1.1em; font-weight: bold; color: #007bff; margin-bottom: 5px;">
+            Produk: {{ r.Product.Varietas }}
+        </div>
+        <div style="margin-bottom: 3px;">
+            <span style="color: #666; font-weight: bold;">Dari:</span> {{ r.Seller.username }} [{{ r.Seller.Role|capfirst }}]
+        </div>
+        <div style="margin-bottom: 3px;">
+            <span style="color: #666; font-weight: bold;">Ke:</span> {{ r.Buyer.username }} [{{ r.Buyer.Role|capfirst }}]
+        </div>
+        <div style="font-size: 0.9em; color: #999; border-top: 1px solid #eee; padding-top: 5px; margin-top: 5px;">
+            <span style="color: #666; font-weight: bold;">Tanggal:</span> {{ r.Date|date:"d M Y H:i" }} 
+        </div>
+      </li>
+    {% empty %}
+      <li style="padding: 10px; text-align: center; color: #777; background-color: #eee; border-radius: 6px;">
+        Belum ada barang yang pernah dimiliki.
+      </li>
+    {% endfor %}
+    </ul>
+</div>

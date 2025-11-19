@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Masukkan Product - {{ title }}</title>
+    
+    <!-- Font Google: Montserrat -->
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700;900&display=swap" rel="stylesheet">
+    
+    <style>
+        /* Variabel Warna Coklat Konsisten */
+        :root {
+            --primary-color: #a37f5d; /* Coklat Medium/Tan (Aksi Utama) */
+            --primary-hover: #8c6a4e; /* Coklat lebih tua */
+            --dark-color: #755646; /* Coklat Tua (Teks Utama) */
+            --light-bg: #f7f3ed; /* Krem muda (Background Halaman) */
+            --card-bg: #ffffff; /* Putih bersih untuk Card */
+            --border-color: #e0d5c9; /* Garis tepi halus */
+            --highlight-color: #5d4037; /* Coklat gelap untuk label */
+        }
+
+        body {
+            font-family: 'Montserrat', sans-serif; /* Menggunakan Montserrat */
+            background-color: var(--light-bg);
+            color: var(--dark-color);
+            margin: 0;
+            padding: 40px 20px;
+        }
+        .form-container {
+            max-width: 650px; /* Sedikit lebih lebar untuk tabel */
+            margin: 0 auto;
+            background-color: var(--card-bg);
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 8px 20px rgba(117, 86, 70, 0.1);
+            border: 1px solid var(--border-color);
+        }
+        h1 {
+            color: var(--dark-color);
+            text-align: center;
+            margin-bottom: 25px;
+            border-bottom: 3px solid var(--primary-color);
+            padding-bottom: 10px;
+            font-weight: 700;
+            font-size: 2em;
+        }
+        
+        /* --- Styling Tabel (form.as_table) --- */
+        .form-container table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0 15px; /* Jarak antar baris */
+        }
+        .form-container table th, 
+        .form-container table td {
+            padding: 10px 0;
+            text-align: left;
+            vertical-align: middle; /* Tengah vertikal */
+        }
+        .form-container table th {
+            font-weight: 600;
+            width: 30%; /* Lebar label */
+            color: var(--highlight-color);
+            padding-right: 20px;
+        }
+        
+        /* Styling Input Fields */
+        .form-container table input[type="text"],
+        .form-container table input[type="number"],
+        .form-container table select,
+        .form-container table textarea {
+            width: 98%; 
+            padding: 12px;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            box-sizing: border-box;
+            transition: border-color 0.3s, box-shadow 0.3s;
+            font-family: 'Montserrat', sans-serif;
+            color: #333;
+        }
+        .form-container table textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+        
+        .form-container table input:focus,
+        .form-container table select:focus,
+        .form-container table textarea:focus {
+            border-color: var(--primary-color); 
+            outline: none;
+            /* 🟢 Box shadow menggunakan warna primer coklat */
+            box-shadow: 0 0 5px rgba(163, 127, 93, 0.5); 
+        }
+        
+        /* --- Styling Tombol Submit --- */
+        .submit-btn {
+            width: 100%;
+            padding: 15px;
+            background-color: var(--primary-color); /* Coklat Primer */
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.2em;
+            font-weight: 700;
+            cursor: pointer;
+            transition: background-color 0.3s, box-shadow 0.3s;
+            margin-top: 25px;
+        }
+        .submit-btn:hover {
+            background-color: var(--primary-hover);
+            box-shadow: 0 6px 15px rgba(163, 127, 93, 0.4);
+        }
+
+        /* Responsif Sederhana */
+        @media (max-width: 700px) {
+            .form-container {
+                padding: 20px;
+            }
+            .form-container table th,
+            .form-container table td {
+                display: block;
+                width: 100%;
+                padding: 5px 0;
+            }
+            .form-container table th {
+                padding-top: 15px;
+                padding-bottom: 5px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="form-container">
+        <h1>Silahkan masukkan data produk</h1>
+        <form method='POST'> 
+            {% csrf_token %}
+            <table>
+                {{ form.as_table }}
+            </table>
+            <button type="Submit" class="submit-btn">Kirim Data Produk</button>
+        </form>
+    </div>
+</body>
+</html>

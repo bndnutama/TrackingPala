@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ title }}</title>
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #eef1f5;
+            color: #333;
+            margin: 0;
+            padding: 40px 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+        }
+        .dashboard-header {
+            color: #1a3a60;
+            font-size: 2.2em;
+            margin-bottom: 30px;
+            border-bottom: 3px solid #007bff;
+            padding-bottom: 10px;
+        }
+        .action-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr; /* Dua kolom */
+            gap: 25px;
+            max-width: 650px;
+            width: 100%;
+        }
+        .action-card {
+            background-color: #ffffff;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            padding: 25px;
+            text-decoration: none; /* Hilangkan garis bawah tautan */
+            transition: transform 0.3s, box-shadow 0.3s;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            min-height: 150px;
+        }
+        .action-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+        }
+
+        /* Styling untuk Scan QR Card (Aksi Utama) */
+        .scan-card {
+            border: 3px solid #28a745; /* Border Hijau */
+            color: #28a745;
+        }
+        .scan-card:hover {
+            background-color: #28a745;
+            color: white;
+        }
+
+        /* Styling untuk List Product Card (Aksi Sekunder) */
+        .list-card {
+            border: 3px solid #007bff; /* Border Biru */
+            color: #007bff;
+        }
+        .list-card:hover {
+            background-color: #007bff;
+            color: white;
+        }
+        
+        .card-icon {
+            font-size: 3em;
+            margin-bottom: 10px;
+        }
+        .card-title {
+            font-size: 1.2em;
+            font-weight: bold;
+            margin: 0;
+        }
+
+        /* Hapus elemen HTML yang tidak diperlukan */
+        li, h1 {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="dashboard-header">
+        Dashboard Distributor 🧑‍🌾
+    </div>
+    
+    <div class="action-grid">
+        
+        <a href="{% url 'scanpage' Role=request.user.Role %}" class="action-card scan-card">
+            <div class="card-icon">📷</div>
+            <div class="card-title">Scan QR Produk</div>
+        </a>
+        
+        <a href="Produk/" class="action-card list-card">
+            <div class="card-icon">📋</div>
+            <div class="card-title">List Product</div>
+        </a>
+        <a href="{% url 'logout' %}">Logout</a>
+        
+    </div>
+</body>
+</html>

@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ title }} | Customer Dashboard</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+
+<style>
+    /* RESET & BASE */
+    body {
+        font-family: 'Roboto', sans-serif;
+        background-color: #f5f7fa; /* Latar belakang lebih terang */
+        color: #333;
+        margin: 0;
+        padding: 0;
+        min-height: 100vh;
+    }
+    a { text-decoration: none; }
+
+    /* SIDEBAR */
+    .sidebar {
+        width: 260px; /* Lebar sedikit lebih besar */
+        background-color: #002d62; /* Biru gelap premium */
+        color: white;
+        position: fixed;
+        height: 100vh;
+        left: 0;
+        top: 0;
+        padding: 20px 0;
+        box-shadow: 4px 0 15px rgba(0,0,0,0.1);
+        transition: transform 0.3s ease;
+        z-index: 1500;
+    }
+
+    .sidebar .brand {
+        font-size: 1.8em;
+        font-weight: 700;
+        text-align: center;
+        padding: 0 20px 20px 20px;
+        margin-bottom: 20px;
+        border-bottom: 1px solid rgba(255,255,255,0.1);
+    }
+
+    .sidebar a {
+        display: block;
+        color: white;
+        padding: 15px 20px;
+        font-weight: 500;
+        transition: background-color 0.2s, color 0.2s;
+    }
+    .sidebar a:hover {
+        background-color: #004080; /* sedikit lebih terang saat hover */
+        color: #ffffff;
+    }
+    .sidebar a.active {
+        background-color: #007bff; /* Warna aktif */
+    }
+
+    /* CONTENT LAYOUT */
+    .content {
+        margin-left: 260px;
+        padding: 30px;
+        transition: margin-left 0.3s;
+    }
+
+    /* HEADER DASHBOARD */
+    .dashboard-header {
+        font-size: 2em;
+        font-weight: 300;
+        color: #1a3a60;
+        margin-bottom: 30px;
+        padding-bottom: 10px;
+        border-bottom: 1px solid #ddd;
+    }
+
+    /* ACTION GRID (BAGIAN UTAMA PERBAIKAN) */
+    .action-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 30px;
+        margin-top: 30px;
+    }
+
+    .action-card {
+        background: #ffffff;
+        border-radius: 12px;
+        padding: 25px;
+        text-align: center;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        border: 1px solid #eee;
+    }
+
+    .action-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 25px rgba(0,0,0,0.12);
+    }
+
+    .card-icon {
+        font-size: 3.5em;
+        margin-bottom: 15px;
+        color: #007bff; /* Warna ikon */
+    }
+
+    .card-title {
+        font-size: 1.3em;
+        font-weight: 500;
+        color: #1a3a60;
+    }
+
+    .scan-card .card-icon {
+        color: #28a745; /* Ikon khusus scan berwarna hijau */
+    }
+
+
+    /* HAMBURGER BUTTON */
+    .menu-btn {
+        display: none;
+        position: fixed;
+        top: 15px;
+        left: 15px;
+        background: #002d62;
+        color: white;
+        padding: 10px 15px;
+        border-radius: 6px;
+        font-size: 1.4em;
+        cursor: pointer;
+        z-index: 2000;
+        border: none;
+    }
+
+    /* OVERLAY MOBILE */
+    .overlay {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0,0,0,0.6);
+        z-index: 1400;
+    }
+
+    /* MOBILE MODE */
+    @media (max-width: 900px) { /* breakpoint lebih besar untuk responsivitas */
+        .sidebar {
+            transform: translateX(-260px); 
+        }
+
+        .sidebar.active {
+            transform: translateX(0); 
+        }
+
+        .content {
+            margin-left: 0;
+            padding-top: 80px; /* Ruang untuk tombol menu */
+        }
+        
+        .menu-btn {
+            display: block;
+        }
+
+        .overlay.show {
+            display: block;
+        }
+    }
+</style>
+
+
+    <script>
+        function toggleMenu() {
+            document.querySelector('.sidebar').classList.toggle('active');
+            document.querySelector('.overlay').classList.toggle('show');
+        }
+    </script>
+
+</head>
+
+<body>
+
+    <button class="menu-btn" onclick="toggleMenu()">☰</button>
+
+    <div class="overlay" onclick="toggleMenu()"></div>
+
+    <div class="sidebar">
+        <div class="brand">Customer Panel</div>
+        <a href="/">Home</a>
+        <a href="{% url 'scanpage' Role=request.user.Role %}" class="active">Scan Produk</a>
+        <a href="{% url 'logout' %}">Logout</a>
+        </div>
+
+    <div class="content">
+        <header class="dashboard-header">
+            Dashboard Pelanggan 👋
+        </header>
+        
+        <section class="action-grid">           
+            <a href="Produk/" class="action-card info-card">
+                <div class="card-icon">
+                    <span aria-hidden="true">&#x1F4DC;</span> </div>
+                <div class="card-title">Riwayat Pembelian</div>
+            </a>
+
+        </section>
+
+    </div>
+
+</body>
+</html>

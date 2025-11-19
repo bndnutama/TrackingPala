@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Input Proses Factory</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #eef3f7;
+            color: #333;
+            margin: 0;
+            padding: 40px 20px;
+        }
+        .form-container {
+            max-width: 700px;
+            margin: 0 auto;
+            background-color: #ffffff;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+        h2 {
+            color: #1a3a60;
+            text-align: center;
+            margin-bottom: 25px;
+            font-size: 2em;
+            border-bottom: 3px solid #007bff;
+            padding-bottom: 10px;
+        }
+        .product-info {
+            background-color: #f1f7ff;
+            padding: 15px;
+            border-left: 5px solid #007bff;
+            border-radius: 8px;
+            margin-bottom: 30px;
+            font-size: 1.1em;
+            color: #1f4068;
+        }
+        
+        /* Styling untuk setiap bagian proses (H3) */
+        h3 {
+            color: #28a745; /* Warna Hijau untuk judul bagian */
+            border-bottom: 1px solid #e0e0e0;
+            padding-bottom: 5px;
+            margin-top: 30px;
+            margin-bottom: 15px;
+            font-size: 1.4em;
+        }
+
+        /* Styling Form Elements */
+        form label {
+            display: block;
+            font-weight: 600;
+            color: #555;
+            margin-top: 15px;
+            margin-bottom: 5px;
+        }
+        form input[type="text"],
+        form input[type="datetime-local"],
+        form select,
+        form textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ced4da;
+            border-radius: 6px;
+            box-sizing: border-box;
+            margin-bottom: 10px;
+            transition: border-color 0.3s;
+        }
+        form input:focus,
+        form select:focus,
+        form textarea:focus {
+            border-color: #28a745;
+            outline: none;
+            box-shadow: 0 0 5px rgba(40, 167, 69, 0.2);
+        }
+        form textarea {
+            resize: vertical;
+            min-height: 80px;
+        }
+
+        /* Styling Tombol Submit */
+        button[type="submit"] {
+            width: 100%;
+            padding: 15px;
+            background-color: #007bff; /* Biru untuk Simpan */
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.2em;
+            font-weight: 700;
+            cursor: pointer;
+            transition: background-color 0.3s, box-shadow 0.3s;
+            margin-top: 30px;
+        }
+        button[type="submit"]:hover {
+            background-color: #0056b3;
+            box-shadow: 0 6px 15px rgba(0, 123, 255, 0.4);
+        }
+    </style>
+</head>
+<body>
+    <div class="form-container">
+        <h2>Input Proses Produksi Pabrik ⚙️</h2>
+
+        <p class="product-info">
+            **Produk:** {{ product.Varietas }} ({{ product.Volume }} Kg)
+        </p>
+
+        <form method="POST">
+            {% csrf_token %}
+
+            <h3>1. Pengeringan (Drying) 🌡️</h3>
+            {{ form.Drying_Start.label_tag }} {{ form.Drying_Start }}
+            {{ form.Drying_End.label_tag }} {{ form.Drying_End }}
+            {{ form.Drying_Notes.label_tag }} {{ form.Drying_Notes }}
+
+            <h3>2. Pengepresan (Pressing) 🛠️</h3>
+            {{ form.Pressing_Date.label_tag }} {{ form.Pressing_Date }}
+            {{ form.Pressing_Notes.label_tag }} {{ form.Pressing_Notes }}
+
+            <h3>3. Pengemasan (Packaging) 🎁</h3>
+            {{ form.Packaging_Date.label_tag }} {{ form.Packaging_Date }}
+            {{ form.Packaging_Type.label_tag }} {{ form.Packaging_Type }}
+            {{ form.Packaging_Notes.label_tag }} {{ form.Packaging_Notes }}
+
+            <button type="submit">Simpan Proses</button>
+        </form>
+    </div>
+</body>
+</html>

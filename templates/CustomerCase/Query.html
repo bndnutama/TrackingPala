@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Perjalanan Produk - {{ product.Nama }}</title>
+
+    <style>
+        /* Menggunakan font yang lebih modern dan umum */
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f4f7f6; /* Latar belakang yang lebih terang */
+            color: #333;
+            padding: 20px;
+        }
+        
+        /* Judul lebih tegas */
+        h2 { 
+            color: #1abc9c; /* Warna utama untuk judul besar (hijau toska) */
+            border-bottom: 2px solid #1abc9c;
+            padding-bottom: 10px;
+            margin-bottom: 30px;
+        }
+        h3 { 
+            color: #2c3e50; /* Warna gelap untuk subjudul */
+            margin-top: 0;
+            margin-bottom: 15px;
+        }
+        
+        /* Card yang lebih halus */
+        .card {
+            background: #fff;
+            padding: 25px;
+            border-radius: 12px;
+            /* Bayangan halus */
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08); 
+            margin-bottom: 30px;
+            border-left: 5px solid #1abc9c; /* Garis samping sebagai aksen */
+        }
+        
+        /* Timeline yang lebih ramping */
+        .timeline {
+            border-left: 2px dashed #bdc3c7; /* Garis yang lebih tipis dan putus-putus */
+            padding-left: 30px;
+            margin-top: 20px;
+        }
+        
+        .timeline-item {
+            margin-bottom: 35px;
+            position: relative;
+            padding-bottom: 15px;
+        }
+        
+        /* Penanda Lingkaran Timeline */
+        .timeline-item::before {
+            content: "";
+            width: 14px;
+            height: 14px;
+            background: #1abc9c;
+            border: 3px solid #f4f7f6; /* Kontras dengan latar belakang */
+            border-radius: 50%;
+            position: absolute;
+            left: -38px; /* Menggeser agar sejajar dengan garis */
+            top: 0px;
+            z-index: 1; /* Agar terlihat di atas garis */
+        }
+        
+        /* Judul Waktu */
+        .label-title {
+            font-weight: bold;
+            color: #34495e;
+            font-size: 1.1em;
+            margin-bottom: 8px;
+            display: block;
+        }
+
+        /* Blok Detail Pengguna (Seller/Buyer) */
+        .user-block {
+            background: #ecf0f1; /* Warna latar belakang abu-abu muda */
+            padding: 12px 18px;
+            border-radius: 8px;
+            margin-top: 8px;
+            border-left: 3px solid #3498db; /* Aksen biru untuk pembeda */
+            line-height: 1.4;
+            font-size: 0.95em;
+        }
+
+        /* Detail Tambahan (Lokasi/Waktu) */
+        .user-block span {
+            display: block;
+            margin-top: 4px;
+            color: #555;
+        }
+
+        /* List User Handler */
+        .card ul {
+            list-style: none;
+            padding-left: 0;
+        }
+        .card ul li {
+            padding: 8px 0;
+            border-bottom: 1px dotted #e0e0e0;
+        }
+        .card ul li:last-child {
+            border-bottom: none;
+        }
+    </style>
+</head>
+
+<body>
+
+<h2>Riwayat Perjalanan Produk</h2>
+---
+<div class="card">
+    <h3>Produk: {{ product.Varietas }}</h3>
+</div>
+
+---
+<div class="card">
+    <h3>Produk Handler </h3>
+
+    <ul>
+        {% for u in users %}
+            <li style="margin-bottom: 10px;">
+                <strong>
+                {% if u.Role == "farmer" %}
+                    {{ u.Farmer.Nama|default:"-" }} (Petani)
+                    <br>Lokasi: {{ u.Farmer.Lokasi|default:"Tidak tersedia" }}
+
+                {% elif u.Role == "trader" %}
+                    {{ u.Trader.Nama|default:"-" }} (Pengepul)
+                    <br>Lokasi: {{ u.Trader.Lokasi|default:"Tidak tersedia" }}
+
+                {% elif u.Role == "factory" %}
+                    {{ u.Factory.Factory_Name|default:"-" }} (Pabrik)
+                    <br>Lokasi: {{ u.Factory.Lokasi|default:"Tidak tersedia" }}
+
+                {% elif u.Role == "distributor" %}
+                    {{ u.Distributor.Name|default:"-" }} (Distributor)
+                    <br>Lokasi: {{ u.Distributor.Lokasi|default:"Tidak tersedia" }}
+
+                {% elif u.Role == "customer" %}
+                    {{ u.Customer.Name|default:"-" }} (Konsumen)
+                    <br>Lokasi: {{ u.Customer.Lokasi|default:"Tidak tersedia" }}
+
+                {% endif %}
+                </strong>
+            </li>
+        {% empty %}
+            <li>Belum ada user terkait dengan produk ini.</li>
+        {% endfor %}
+    </ul>
+</div>
+
+---
+<div class="card">
+    <h3>Timeline Perjalanan Produk</h3>
+
+    <div class="timeline">
+        {% for h in journey %}
+        <div class="timeline-item">
+            <div class="label-title">
+                {{ h.Time|date:"d M Y H:i" }}
+            </div>
+
+            <div class="user-block">
+                <strong>Dari:</strong>
+                
+                {% if h.Seller.Role == "farmer" %}
+                    {{ h.Seller.Farmer.Nama }} ({{ h.Seller.Role }}) <span>Lokasi: {{ h.Seller.Farmer.Lokasi|default:"-" }}</span> 
+
+                {% elif h.Seller.Role == "trader" %}
+                    {{ h.Seller.Trader.Nama }} ({{ h.Seller.Role }})<span>Lokasi: {{ h.Seller.Trader.Lokasi|default:"-" }}</span> 
+
+                {% elif h.Seller.Role == "factory" %}
+                    {{ h.Seller.Factory.Factory_Name }} ({{ h.Seller.Role }})<span>Lokasi: {{ h.Seller.Factory.Lokasi|default:"-" }}</span> 
+
+                {% elif h.Seller.Role == "distributor" %}
+                    {{ h.Seller.Distributor.Name }} ({{ h.Seller.Role }})<span>Lokasi: {{ h.Seller.Distributor.Lokasi|default:"-" }}</span> 
+
+                {% elif h.Seller.Role == "customer" %}
+                    {{ h.Seller.Customer.Nama }} ({{ h.Seller.Role }})<span>Lokasi: {{ h.Seller.Customer.Lokasi|default:"-" }}</span> 
+
+                {% else %}
+                Tidak diketahui
+                <span>Lokasi: -</span>
+                {% endif %}
+
+            </div>
+
+            <div class="user-block" style="margin-top: 10px;">
+                <strong>Ke:</strong>
+                {% if h.Buyer.Role == "farmer" %}
+                    {{ h.Buyer.Farmer.Nama }} ({{ h.Buyer.Role }}) <span>Lokasi: {{ h.Buyer.Farmer.Lokasi|default:"-" }}</span>
+
+                {% elif h.Buyer.Role == "trader" %}
+                    {{ h.Buyer.Trader.Nama }} ({{ h.Buyer.Role }}) <span>Lokasi: {{ h.Buyer.Trader.Lokasi|default:"-" }}</span>
+
+                {% elif h.Buyer.Role == "factory" %}
+                    {{ h.Buyer.Factory.Factory_Name }} ({{ h.Buyer.Role }}) <span>Lokasi: {{ h.Buyer.Factory.Lokasi|default:"-" }}</span>
+
+                {% elif h.Buyer.Role == "distributor" %}
+                    {{ h.Buyer.Distributor.Name }} ({{ h.Buyer.Role }}) <span>Lokasi: {{ h.Buyer.Distributor.Lokasi|default:"-" }}</span>
+
+                {% elif h.Buyer.Role == "customer" %}
+                    {{ h.Buyer.Customer.Nama }} ({{ h.Buyer.Role }}) <span>Lokasi: {{ h.Buyer.Customer.Lokasi|default:"-" }}</span>
+
+                {% else %}
+                    Tidak diketahui <span>Lokasi: -</span>
+                {% endif %}
+
+                <span>Waktu Transaksi: {{ h.Date }}</span>
+            </div>
+        </div>
+        {% empty %}
+            <p>Belum ada perjalanan produk.</p>
+        {% endfor %}
+    </div>
+ <button class="btn" onclick="window.location.href='{% url dashboard_url %}'">Kembali ke Dashboard</button>
+</div>
+
+</body>
+</html>

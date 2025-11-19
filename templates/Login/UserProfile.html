@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ title|default:"Profil Pengguna" }}</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700;900&display=swap" rel="stylesheet">
+    
+    <style>
+        /* Variabel Warna Coklat Konsisten */
+        :root {
+            --primary-color: #a37f5d; /* Coklat Medium/Tan */
+            --dark-color: #755646; /* Coklat Tua (Teks Utama) */
+            --light-bg: #f7f3ed; /* Krem muda (Background Halaman) */
+            --card-bg: #ffffff; /* Putih bersih untuk Card */
+            --border-color: #e0d5c9; /* Garis tepi halus */
+            --highlight-color: #5d4037; /* Coklat gelap untuk label */
+        }
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background-color: var(--light-bg);
+            color: var(--dark-color);
+            margin: 0;
+            padding: 40px 20px; /* Tambah padding vertikal untuk tampilan yang lebih baik */
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+        }
+        
+        /* --- STYLING CARD PROFIL --- */
+        .profile-container {
+            width: 100%;
+            max-width: 600px;
+            margin: auto;
+        }
+
+        .profile-container h2 {
+            color: var(--dark-color);
+            font-weight: 700;
+            font-size: 2em;
+            margin-bottom: 30px; /* Kurangi sedikit margin-bottom */
+            text-align: center;
+        }
+
+        .card {
+            background-color: var(--card-bg);
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 8px 20px rgba(117, 86, 70, 0.1);
+            border: 1px solid var(--border-color);
+        }
+        
+        /* 🟢 Mengatur tata letak item di dalam card */
+        .info-list {
+            display:flex;
+            flex-direction: column;
+            gap: 10px; 
+        }
+        
+        .info-item {
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 12px 15px;
+            margin: 0;
+            background-color: #fafafa;
+            display: flex; 
+            /* 🔴 PERUBAHAN UTAMA: Ganti space-between ke jarak kecil */
+            justify-content: flex-start; 
+            gap: 10px; /* Jarak antara Label dan Nilai */
+            align-items: center;
+        }
+        .info-item strong {
+            color: var(--highlight-color);
+            font-weight: 600;
+            font-size: 0.95em;
+            /* 🔴 Opsi: Agar label memiliki lebar minimum untuk sejajar */
+            min-width: 100px; 
+        }
+
+        .info-item span {
+            color: var(--dark-color);
+            font-weight: 500;
+            /* Hapus text-align: right karena kita ingin dia berdekatan */
+            /* max-width: 60%; */ 
+            word-wrap: break-word;
+            flex-grow: 1; /* Biarkan nilai mengisi sisa ruang setelah label */
+        }
+
+        /* Styling untuk pesan data tidak tersedia */
+        .no-data {
+            text-align: center;
+            padding: 15px;
+            background-color: #fff8e1;
+            border-radius: 8px;
+            border: 1px solid #ffe0b2;
+            color: var(--highlight-color);
+            font-weight: 500;
+        }
+    </style>
+</head>
+<body>
+    <div class="profile-container">
+        <h2>Informasi Profil Anda</h2>
+        
+        <div class="card">
+            <div class="info-list">
+                
+                <p class="info-item"><strong>Username:</strong> <span>{{ user.username }}</span></p>
+                <p class="info-item"><strong>Email:</strong> <span>{{ user.email }}</span></p>
+                <p class="info-item"><strong>Role:</strong> <span>{{ user.Role }}</span></p>
+
+                {% if profile %}
+                    <p class="info-item"><strong>Nama Lengkap:</strong> <span>{{ profile.Name }}</span></p>
+                    <p class="info-item"><strong>Lokasi:</strong> <span>{{ profile.Location }}</span></p>
+                    <p class="info-item"><strong>Group Petani:</strong> <span>{{ profile.FarmerGroup }}</span></p>
+                {% else %}
+                    <div class="no-data">
+                        <p style="margin: 0;">Data profil tambahan belum tersedia.</p>
+                    </div>
+                {% endif %}
+                
+            </div>
+        </div>
+    </div>
+</body>
+</html>

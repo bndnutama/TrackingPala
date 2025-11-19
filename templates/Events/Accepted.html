@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Scan Berhasil</title>
+    <style>
+        body {
+            font-family: "Segoe UI", sans-serif;
+            background: #f7f9fb;
+            padding: 40px;
+            text-align: center;
+        }
+        .container {
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            display: inline-block;
+            padding: 40px;
+            max-width: 500px;
+        }
+        h2 {
+            color: #219653;
+            margin-bottom: 10px;
+        }
+        .product-info {
+            text-align: left;
+            margin-top: 25px;
+            border-top: 1px solid #ddd;
+            padding-top: 15px;
+        }
+        .success-icon {
+            font-size: 60px;
+            color: #27ae60;
+        }
+        .transfer {
+            background-color: #eafaf1;
+            border: 1px solid #27ae60;
+            border-radius: 10px;
+            padding: 10px;
+            margin-top: 15px;
+        }
+        .btn {
+            background-color: #2f80ed;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            padding: 10px 16px;
+            margin-top: 20px;
+            cursor: pointer;
+            font-size: 15px;
+        }
+        .btn:hover {
+            background-color: #1b62d3;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="success-icon">✅</div>
+    <h2>Scan QR Berhasil!</h2>
+    <p>Data produk berhasil dipindahkan ke akun Anda.</p>
+
+    <div class="product-info">
+        <h3>📦 Detail Produk</h3>
+        <p><strong>Nama Produk:</strong> {{ product.Varietas }}</p>
+        <p><strong>Volume:</strong> {{ product.Volume }} Kg</p>
+        <p><strong>Kadar Air:</strong> {{ product.Kadar_Air }}%</p>
+        <p><strong>Metode Panen:</strong> {{ product.Metode_Panen }}</p>
+        <p><strong>Umur Panen:</strong> {{ product.Umur_Panen }}</p>
+    </div>
+
+    <div class="transfer">
+        <p>🔁 <strong>Perpindahan Kepemilikan:</strong></p>
+        <p>Dari: <strong>{{ seller.username }}</strong></p>
+        <p>Ke: <strong>{{ buyer.username }}</strong></p>
+    </div>
+
+<button class="btn" onclick="window.location.href='{% url dashboard_url %}'">Kembali ke Dashboard</button>
+
+</div>
+
+</body>
+</html>

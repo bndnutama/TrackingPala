@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lengkapi Data {{ role|title }}</title>
+
+    <!-- Leaflet CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f7f9fc;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .form-card {
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 480px;
+        }
+
+        h2 {
+            color: #1f4068;
+            margin-bottom: 25px;
+            text-align: center;
+            border-bottom: 3px solid #007bff;
+            padding-bottom: 10px;
+        }
+
+        .map-container {
+            width: 100%;
+            height: 320px;
+            margin-bottom: 15px;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        /* FORM styling */
+        .form-card form p {
+            margin-bottom: 15px;
+        }
+        .form-card form p label {
+            font-weight: 600;
+            margin-bottom: 5px;
+            display: block;
+        }
+        .form-card form p input,
+        .form-card form p select,
+        .form-card form p textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ced4da;
+            border-radius: 6px;
+            box-sizing: border-box;
+        }
+
+        button[type="button"] {
+            width: 100%;
+            padding: 11px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-size: 1em;
+            font-weight: 600;
+            cursor: pointer;
+            margin-bottom: 15px;
+        }
+
+        button[type="button"]:hover {
+            background-color: #0069d9;
+        }
+
+        button[type="submit"] {
+            width: 100%;
+            padding: 12px;
+            background-color: #28a745;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-size: 1.1em;
+            cursor: pointer;
+            font-weight: 600;
+            margin-top: 10px;
+        }
+
+        @media (max-width: 480px) {
+            .form-card {
+                padding: 15px;
+            }
+            .map-container {
+                height: 260px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="form-card">
+    <h2>Lengkapi Data {{ role|title }} 📄</h2>
+
+    <!-- Map -->
+    <div id="map" class="map-container"></div>
+
+    <!-- Tombol Gunakan Lokasi -->
+    <button id="use-location" type="button">Gunakan Lokasi Ini 📍</button>
+
+    <!-- Form -->
+    <form method="POST">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Simpan Profil</button>
+    </form>
+</div>
+
+<!-- Leaflet JS -->
+<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+
+<script>
+let map, marker;
+
+// Tampilkan map berdasarkan GPS user
+navigator.geolocation.getCurrentPosition(function(position) {
+    const lat = position.coords.latitude;
+    const lon = position.coords.longitude;
+
+    map = L.map('map').setView([lat, lon], 16);
+
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        maxZoom: 19,
+    }).addTo(map);
+
+    marker = L.marker([lat, lon], {draggable: true}).addTo(map);
+
+}, function() {
+    alert("Tidak dapat mengambil lokasi!");
+});
+
+// Tombol untuk mengisi field Location
+document.getElementById("use-location").onclick = function() {
+    const lat = marker.getLatLng().lat;
+    const lon = marker.getLatLng().lng;
+
+    const field = document.getElementById("id_Location");
+
+    if (field) {
+        field.value = lat + "," + lon;
+        alert("Lokasi telah dipilih ✔");
+    }
+};
+</script>
+
+</body>
+</html>

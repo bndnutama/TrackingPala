@@ -1,0 +1,126 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registrasi Akun - {{ title }}</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700;900&display=swap" rel="stylesheet">
+
+    {% block content %}
+    <style>
+        /* Global Reset dan Font */
+        body {
+            /* Menggunakan Montserrat */
+            font-family: 'Montserrat', sans-serif;
+            background-color: #f7f3ed; /* Krem muda/Off-white */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+        }
+        .register-card {
+            background-color: #ffffff;
+            padding: 40px;
+            border-radius: 15px;
+            /* Bayangan halus, sedikit coklat */
+            box-shadow: 0 10px 30px rgba(117, 86, 70, 0.1); 
+            width: 100%;
+            max-width: 450px;
+            margin: 50px auto;
+            text-align: center;
+        }
+        h2 {
+            color: #755646; /* Coklat Tua */
+            margin-bottom: 25px;
+            font-size: 1.8em;
+            font-weight: 700;
+        }
+        /* Styling default Django form.as_p output */
+        .register-card form p {
+            margin-bottom: 15px;
+            text-align: left;
+        }
+        .register-card form p label {
+            display: block;
+            font-weight: 600;
+            color: #5d4037; /* Coklat sedang untuk label */
+            margin-bottom: 5px;
+        }
+        .register-card form p input,
+        .register-card form p select {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #c2b4a5; /* Garis tepi coklat muda */
+            border-radius: 8px;
+            box-sizing: border-box;
+            transition: border-color 0.3s;
+            font-family: 'Montserrat', sans-serif;
+        }
+        .register-card form p input:focus,
+        .register-card form p select:focus {
+            border-color: #b8860b; /* Emas/Kuning Kunyit saat fokus */
+            outline: none;
+            box-shadow: 0 0 5px rgba(184, 134, 11, 0.5);
+        }
+        .register-btn {
+            width: 100%;
+            padding: 15px;
+            background-color: #a37f5dff; /* Coklat Medium/Tan (Warna Primer) */
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.1em;
+            cursor: pointer;
+            transition: background-color 0.3s, box-shadow 0.3s;
+            font-weight: 700;
+            margin-top: 20px;
+        }
+        .register-btn:hover {
+            background-color: #8c6a4e; /* Coklat lebih tua saat hover */
+            box-shadow: 0 6px 15px rgba(163, 127, 93, 0.4);
+        }
+        .login-link-text {
+            margin-top: 25px;
+            font-size: 0.95em;
+            color: #6c757d;
+        }
+        .login-link-text a {
+            color: #755646; /* Menggunakan Coklat Tua untuk tautan */
+            text-decoration: none;
+            font-weight: 600;
+        }
+        .login-link-text a:hover {
+            text-decoration: underline;
+        }
+        .form {
+            text-align: left;
+            
+        }
+    </style>
+</head>
+<body>
+
+<div class="register-card">
+    <h2>Daftar Akun Baru</h2>
+    <hr style="border: 0; border-top: 1px solid #c2b4a5; margin-bottom: 25px;">
+    <div class = "form">
+    <form method="POST">
+        {% csrf_token %}
+        {{ form.as_p }} 
+
+        <button type="submit" class="register-btn">
+            Daftar Sekarang
+        </button>
+    </form>
+    </div>
+    <p class="login-link-text">
+        Sudah punya akun? <a href="{% url 'Login' %}">Masuk di sini</a>
+    </p>
+</div>
+
+</body>
+</html>
+{% endblock %}
