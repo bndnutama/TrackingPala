@@ -28,6 +28,10 @@ SECRET_KEY = 'django-insecure-^=@nu9f&f)=$(m@)@mac*zogkcc#h&+b&-^5%84ovp(s4*mkkv
 DEBUG = True
 
 ALLOWED_HOSTS = ['*']
+CSRF_TRUSTED_ORIGINS = [
+    'https://trackingpala-production.up.railway.app',
+    'https://*.railway.app'
+]
 
 
 # Application definition
