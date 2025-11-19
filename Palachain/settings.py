@@ -75,14 +75,9 @@ WSGI_APPLICATION = 'Palachain.wsgi.application'
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'MyPala',
-        'USER':'postgres',
-        'PASSWORD':'22Januari2019',
-        'HOST': '127.0.0.1',
-        'PORT' : '5432',
-    }
+    'default': dj_database_url.config(default='sqlite:///db.sqlite3')
+}
+
 }
 
 
