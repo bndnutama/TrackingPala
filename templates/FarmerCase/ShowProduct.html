@@ -157,7 +157,7 @@
                     <a href="{% url 'factory_process_input' p.id %}" class="action-link">Input Proses Factory</a>
                 
                 {% elif user.Role == 'customer' %}
-                    <a href="#" class="action-link" style="background-color: #388e3c;">Beli Produk</a>
+                    <a href="{% url 'CustomerView' p.id %}" class="action-link">Perjalanan Produk</a>
                 {% endif %}
             </div>
         </li>

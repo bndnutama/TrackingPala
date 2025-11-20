@@ -6,6 +6,7 @@
     <title>{{ title|default:"Profil Pengguna" }}</title>
     
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet" />
     
     <style>
         /* Variabel Warna Coklat Konsisten */
@@ -23,7 +24,7 @@
             background-color: var(--light-bg);
             color: var(--dark-color);
             margin: 0;
-            padding: 40px 20px; /* Tambah padding vertikal untuk tampilan yang lebih baik */
+            padding: 40px 20px; 
             min-height: 100vh;
             display: flex;
             justify-content: center;
@@ -40,7 +41,7 @@
             color: var(--dark-color);
             font-weight: 700;
             font-size: 2em;
-            margin-bottom: 30px; /* Kurangi sedikit margin-bottom */
+            margin-bottom: 30px; 
             text-align: center;
         }
 
@@ -52,7 +53,7 @@
             border: 1px solid var(--border-color);
         }
         
-        /* 🟢 Mengatur tata letak item di dalam card */
+        /* Mengatur tata letak item di dalam card */
         .info-list {
             display:flex;
             flex-direction: column;
@@ -66,26 +67,31 @@
             margin: 0;
             background-color: #fafafa;
             display: flex; 
-            /* 🔴 PERUBAHAN UTAMA: Ganti space-between ke jarak kecil */
             justify-content: flex-start; 
-            gap: 10px; /* Jarak antara Label dan Nilai */
+            gap: 10px; 
             align-items: center;
         }
+        
+        /* Styling untuk Ikon yang Ditambahkan */
+        .info-item .material-symbols-outlined {
+            color: var(--primary-color);
+            font-size: 20px;
+        }
+        
         .info-item strong {
             color: var(--highlight-color);
             font-weight: 600;
             font-size: 0.95em;
-            /* 🔴 Opsi: Agar label memiliki lebar minimum untuk sejajar */
-            min-width: 100px; 
+            /* Tambahkan padding-right untuk membuat jarak yang konsisten setelah label */
+            padding-right: 5px; 
+            min-width: 120px; /* Lebarkan sedikit label agar Latitude dan Longitude bisa sejajar */
         }
 
         .info-item span {
             color: var(--dark-color);
             font-weight: 500;
-            /* Hapus text-align: right karena kita ingin dia berdekatan */
-            /* max-width: 60%; */ 
             word-wrap: break-word;
-            flex-grow: 1; /* Biarkan nilai mengisi sisa ruang setelah label */
+            flex-grow: 1; 
         }
 
         /* Styling untuk pesan data tidak tersedia */
@@ -107,22 +113,42 @@
         <div class="card">
             <div class="info-list">
                 
-                <p class="info-item"><strong>Username:</strong> <span>{{ user.username }}</span></p>
-                <p class="info-item"><strong>Email:</strong> <span>{{ user.email }}</span></p>
-                <p class="info-item"><strong>Role:</strong> <span>{{ user.Role }}</span></p>
+                <p class="info-item"><strong>Username</strong> <span>: {{ user.username }}</span></p>
+                <p class="info-item"><strong>Email</strong> <span>: {{ user.email }}</span></p>
+                <p class="info-item"><strong>Role</strong> <span>: {{ user.Role|capfirst }}</span></p>
 
                 {% if profile %}
-                    <p class="info-item"><strong>Nama Lengkap:</strong> <span>{{ profile.Name }}</span></p>
-                    <p class="info-item"><strong>Lokasi:</strong> <span>{{ profile.Location }}</span></p>
-                    <p class="info-item"><strong>Group Petani:</strong> <span>{{ profile.FarmerGroup }}</span></p>
-                {% else %}
-                    <div class="no-data">
-                        <p style="margin: 0;">Data profil tambahan belum tersedia.</p>
-                    </div>
+                        <p class="info-item"><strong>Nama Lengkap</strong> <span>: {{ profile.Name }}</span></p>
+                        <span id="raw-location-data" style="display: none;">: {{ profile.Location }}</span> 
+                        <p class="info-item" id="district-item" style="display:none;">
+                            <strong>Lokasi</strong> <span id="district-value"></span>
+                        </p>
+                        <p class="info-item"><strong>Group Petani:</strong> <span>: {{ profile.FarmerGroup }}</span></p>
+                        {% else %}
+                            <div class="no-data">
+                                <p style="margin: 0;">Data profil tambahan belum tersedia.</p>
+                            </div>
                 {% endif %}
+
+        <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const rawLocationElement = document.getElementById('raw-location-data');
+            const districtItem = document.getElementById('district-item');
+            const districtValue = document.getElementById('district-value');
+
+            if (rawLocationElement) {
+                let rawLocation = rawLocationElement.textContent.trim();
                 
-            </div>
-        </div>
-    </div>
+                if (rawLocation) {
+                    let parts = rawLocation.split(',');
+                    let district = parts.length > 2 ? parts.slice(2).join(',').trim() : rawLocation;
+                    
+                    districtValue.textContent = district;
+                    districtItem.style.display = 'flex';
+                }
+            }
+        });
+</script>
+
 </body>
 </html>

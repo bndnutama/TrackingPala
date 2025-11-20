@@ -28,6 +28,10 @@ urlpatterns = [
 
     #Show Profile
     path ('Petani/Profil/', ShowProfile, name= 'ShowProfile'),
+    path ('Pengepul/Profil/', ShowProfile, name= 'ShowProfile'),
+    path ('Distributor/Profil/', ShowProfile, name= 'ShowProfile'),
+    path ('Pabrik/Profil/', ShowProfile, name= 'ShowProfile'),
+    path ('Konsumen/Profil/', ShowProfile, name= 'ShowProfile'),
 ]
 
 if settings.DEBUG:

@@ -124,24 +124,24 @@
             <li style="margin-bottom: 10px;">
                 <strong>
                 {% if u.Role == "farmer" %}
-                    {{ u.Farmer.Nama|default:"-" }} (Petani)
-                    <br>Lokasi: {{ u.Farmer.Lokasi|default:"Tidak tersedia" }}
+                    {{ u.Farmer.Name|default:"-" }} (Petani)
+                    <br>Lokasi: {{ u.Farmer.Location|default:"Tidak tersedia" }}
 
                 {% elif u.Role == "trader" %}
-                    {{ u.Trader.Nama|default:"-" }} (Pengepul)
-                    <br>Lokasi: {{ u.Trader.Lokasi|default:"Tidak tersedia" }}
+                    {{ u.Trader.Name|default:"-" }} (Pengepul)
+                    <br>Lokasi: {{ u.Trader.Location|default:"Tidak tersedia" }}
 
                 {% elif u.Role == "factory" %}
-                    {{ u.Factory.Factory_Name|default:"-" }} (Pabrik)
-                    <br>Lokasi: {{ u.Factory.Lokasi|default:"Tidak tersedia" }}
+                    {{ u.Factory.FactoryName|default:"-" }} (Pabrik)
+                    <br>Lokasi: {{ u.Factory.Location|default:"Tidak tersedia" }}
 
                 {% elif u.Role == "distributor" %}
                     {{ u.Distributor.Name|default:"-" }} (Distributor)
-                    <br>Lokasi: {{ u.Distributor.Lokasi|default:"Tidak tersedia" }}
+                    <br>Lokasi: {{ u.Distributor.Location|default:"Tidak tersedia" }}
 
                 {% elif u.Role == "customer" %}
                     {{ u.Customer.Name|default:"-" }} (Konsumen)
-                    <br>Lokasi: {{ u.Customer.Lokasi|default:"Tidak tersedia" }}
+                    <br>Lokasi: {{ u.Customer.Location|default:"Tidak tersedia" }}
 
                 {% endif %}
                 </strong>
@@ -167,19 +167,19 @@
                 <strong>Dari:</strong>
                 
                 {% if h.Seller.Role == "farmer" %}
-                    {{ h.Seller.Farmer.Nama }} ({{ h.Seller.Role }}) <span>Lokasi: {{ h.Seller.Farmer.Lokasi|default:"-" }}</span> 
+                    {{ h.Seller.Farmer.Name }} ({{ h.Seller.Role }}) <span>Lokasi: {{ h.Seller.Farmer.Location|default:"-" }}</span> 
 
                 {% elif h.Seller.Role == "trader" %}
-                    {{ h.Seller.Trader.Nama }} ({{ h.Seller.Role }})<span>Lokasi: {{ h.Seller.Trader.Lokasi|default:"-" }}</span> 
+                    {{ h.Seller.Trader.Name }} ({{ h.Seller.Role }})<span>Lokasi: {{ h.Seller.Trader.Location|default:"-" }}</span> 
 
                 {% elif h.Seller.Role == "factory" %}
-                    {{ h.Seller.Factory.Factory_Name }} ({{ h.Seller.Role }})<span>Lokasi: {{ h.Seller.Factory.Lokasi|default:"-" }}</span> 
+                    {{ h.Seller.Factory.FactoryName }} ({{ h.Seller.Role }})<span>Lokasication h.Seller.Factory.Location|default:"-" }}</span> 
 
                 {% elif h.Seller.Role == "distributor" %}
-                    {{ h.Seller.Distributor.Name }} ({{ h.Seller.Role }})<span>Lokasi: {{ h.Seller.Distributor.Lokasi|default:"-" }}</span> 
+                    {{ h.Seller.Distributor.Name }} ({{ h.Seller.Role }})<span>Lokasi: {{ h.Seller.Distributor.Location|default:"-" }}</span> 
 
                 {% elif h.Seller.Role == "customer" %}
-                    {{ h.Seller.Customer.Nama }} ({{ h.Seller.Role }})<span>Lokasi: {{ h.Seller.Customer.Lokasi|default:"-" }}</span> 
+                    {{ h.Seller.Customer.Name }} ({{ h.Seller.Role }})<span>Lokasi: {{ h.Seller.Customer.Location|default:"-" }}</span> 
 
                 {% else %}
                 Tidak diketahui
@@ -191,19 +191,19 @@
             <div class="user-block" style="margin-top: 10px;">
                 <strong>Ke:</strong>
                 {% if h.Buyer.Role == "farmer" %}
-                    {{ h.Buyer.Farmer.Nama }} ({{ h.Buyer.Role }}) <span>Lokasi: {{ h.Buyer.Farmer.Lokasi|default:"-" }}</span>
+                    {{ h.Buyer.Farmer.Name }} ({{ h.Buyer.Role }}) <span>Lokasi: {{ h.Buyer.Farmer.Location|default:"-" }}</span>
 
                 {% elif h.Buyer.Role == "trader" %}
-                    {{ h.Buyer.Trader.Nama }} ({{ h.Buyer.Role }}) <span>Lokasi: {{ h.Buyer.Trader.Lokasi|default:"-" }}</span>
+                    {{ h.Buyer.Trader.Name }} ({{ h.Buyer.Role }}) <span>Lokasi: {{ h.Buyer.Trader.Location|default:"-" }}</span>
 
                 {% elif h.Buyer.Role == "factory" %}
-                    {{ h.Buyer.Factory.Factory_Name }} ({{ h.Buyer.Role }}) <span>Lokasi: {{ h.Buyer.Factory.Lokasi|default:"-" }}</span>
+                    {{ h.Buyer.Factory.FactoryName }} ({{ h.Buyer.Role }}) <span>Lokasi: {{ h.Buyer.Factory.Location|default:"-" }}</span>
 
                 {% elif h.Buyer.Role == "distributor" %}
-                    {{ h.Buyer.Distributor.Name }} ({{ h.Buyer.Role }}) <span>Lokasi: {{ h.Buyer.Distributor.Lokasi|default:"-" }}</span>
+                    {{ h.Buyer.Distributor.Name }} ({{ h.Buyer.Role }}) <span>Lokasi: {{ h.Buyer.Distributor.Location|default:"-" }}</span>
 
                 {% elif h.Buyer.Role == "customer" %}
-                    {{ h.Buyer.Customer.Nama }} ({{ h.Buyer.Role }}) <span>Lokasi: {{ h.Buyer.Customer.Lokasi|default:"-" }}</span>
+                    {{ h.Buyer.Customer.Name }} ({{ h.Buyer.Role }}) <span>Lokasi: {{ h.Buyer.Customer.Location|default:"-" }}</span>
 
                 {% else %}
                     Tidak diketahui <span>Lokasi: -</span>

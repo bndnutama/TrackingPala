@@ -2,189 +2,152 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ title }}</title>
-    
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;900&display=swap" rel="stylesheet">
-    
-    <style>
-        body {
-            font-family: 'Montserrat', sans-serif;
-            color: #333;
-            margin: 0;
-            padding: 0;
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            background-color: #000000;
-        }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>{{ title }}</title>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;900&display=swap" rel="stylesheet">
+<style>
+body {
+    font-family: 'Montserrat', sans-serif;
+    color: #333;
+    margin: 0;
+    padding: 0;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    background: url("{% static 'tracking/Asset/image.png' %}") no-repeat center center fixed;
+    background-size: cover;
+}
 
-        /* --- Navbar Styles (Tidak Berubah) --- */
-        .navbar {
-            background-color: #ffffff;
-            padding: 15px 40px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            width: 100%;
-            box-sizing: border-box;
-            position: fixed;
-            top: 0;
-            left: 0;
-            z-index: 10;
-            height: 60px; 
-        }
-        .navbar-brand {
-            font-size: 1.5em;
-            font-weight: bold;
-            text-decoration: none;
-            color: #a37f5dff;
-        }
-        
-        .auth-links a {
-            text-decoration: none;
-            margin-left: 20px;
-            padding: 8px 15px;
-            border-radius: 5px;
-            font-weight: bold;
-            transition: background-color 0.3s, color 0.3s;
-            font-size: 0.95em;
-        }
+/* Navbar */
+.navbar {
+    background-color: rgba(255,255,255,0.95); /* semi transparan */
+    padding: 10px 30px; /* lebih kecil */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    box-sizing: border-box;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 10;
+    height: 50px; /* lebih kecil */
+}
+.navbar-brand {
+    font-size: 1.3em;
+    font-weight: bold;
+    text-decoration: none;
+    color: #a37f5dff;
+}
+.auth-links a {
+    text-decoration: none;
+    margin-left: 15px;
+    padding: 6px 12px;
+    border-radius: 5px;
+    font-weight: bold;
+    transition: background-color 0.3s, color 0.3s;
+    font-size: 0.9em;
+}
+.login-btn-nav { background-color: #a37f5dff; color: white; }
+.register-btn-nav { background-color: transparent; color: #a37f5dff; border: 2px solid #a37f5dff; }
+.register-btn-nav:hover { background-color: #f1f7ff; }
 
-        .login-btn-nav {
-            background-color: #a37f5dff;
-            color: white;
-        }
-        .login-btn-nav:hover {
-            background-color: #a37f5dff;
-        }
+/* Main Content */
+.main-content {
+    flex-grow: 1;
+    position: relative;
+    margin-top: 50px; /* menyesuaikan navbar lebih kecil */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    min-height: calc(100vh - 50px);
+}
 
-        .register-btn-nav {
-            background-color: transparent;
-            color: #a37f5dff;
-            border: 2px solid #a37f5dff;
-            padding: 6px 15px;
-        }
-        .register-btn-nav:hover {
-            background-color: #f1f7ff;
-        }
-        
-        /* --- Konten Utama (Area Gambar Latar Belakang) --- */
-        .main-content {
-            flex-grow: 1;
-            /* 🟢 Kunci: Set sebagai kontainer relatif untuk overlay dan hitung tinggi fit */
-            position: relative; 
-            margin-top: 60px; 
-            height: calc(100vh - 60px); 
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            overflow: hidden;
-            width: 100%;
-        }
-        
-        .hero-image {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            display: block;
-        }
+/* Floating Boxes Desktop */
+.floating-box {
+    position: absolute;
+    color: #333;
+    padding: 25px;
+    background-color: rgba(255, 255, 255, 0.85); /* semi transparan agar background terlihat */
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    border-radius: 10px;
+    text-align: center;
+    width: 320px;
+    height: 140px;
+    transition: transform 0.3s;
+}
+.floating-box:hover { transform: translateY(5px); }
+.floating-box-1 { top: 25%; left: 10%; }
+.floating-box-2 { top: 25%; right: 10%; }
 
-        .floating-box {
-            position: absolute;
-            color: #333;
-            padding: 30px;
-            background-color: rgba(255, 255, 255, 0.9);
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
-            border-radius: 10px;
-            text-align: center;
-            width: 350px;
-            height: 150px;
-            transition: transform 0.3s;
-        }
+.floating-box h3 { font-size: 1.4em; margin-bottom: 8px; font-weight: 900; color: #a37f5dff; }
+.floating-box p { font-size: 0.95em; margin-bottom: 0; }
+.floating-btn {
+    display: inline-block;
+    margin-top: 10px;
+    background-color: #a37f5dff;
+    color: white;
+    padding: 8px 16px;
+    border-radius: 5px;
+    text-decoration: none;
+    font-weight: bold;
+    transition: background-color 0.3s;
+}
+.floating-btn:hover { background-color: #8f6e55ff; }
 
-        .floating-box:hover {
-            transform: translateY(10px);
-        }
-
-        .floating-box-1 {
-            top: 30%;
-            left: 20%; 
-            width: 350 px;
-            transform: translateY(10%);
-        }
-        .floating-box-2 {
-            top: 30%;
-            right: 20%; 
-            width: 350 px;
-            transform: translateY(10%);
-        }
-
-        .floating-box h3 {
-            font-size: 1.5em;
-            margin-bottom: 10px;
-            font-weight: 900;
-            color: #a37f5dff;
-        }
-
-        .floating-box p {
-            font-size: 1em;
-            margin-bottom: 0;
-        }
-
-        /* Tombol Aksi di Floating Box (Contoh) */
-        .floating-btn {
-            display: inline-block;
-            margin-top: 15px;
-            background-color: #a37f5dff;
-            color: white;
-            padding: 10px 20px;
-            border-radius: 5px;
-            text-decoration: none;
-            font-weight: bold;
-            transition: background-color 0.3s;
-        }
-
-        .floating-btn:hover {
-            background-color: #a37f5dff;
-        }
-    </style>
+/* Mobile Responsif */
+@media (max-width: 768px) {
+    .main-content {
+        flex-direction: column;
+        justify-content: flex-start;
+        padding: 20px 0;
+    }
+    .floating-box {
+        position: relative;
+        width: 90%;
+        margin: 15px auto;
+        top: auto;
+        left: auto;
+        right: auto;
+        transform: none;
+        height: auto;
+    }
+    .floating-box h3 { font-size: 1.2em; }
+    .floating-box p { font-size: 0.9em; }
+    .auth-links a {
+        margin-left: 10px;
+        padding: 5px 10px;
+        font-size: 0.85em;
+    }
+}
+</style>
 </head>
 <body>
-    
-    <nav class="navbar">
-        <a href="#" class="navbar-brand">IknowPala</a>
-        <div class="auth-links">
-            
-            <a href="{% url 'Login' %}" class="login-btn-nav">
-                Login
-            </a>
-            
-            <a href="{% url 'Register' %}" class="register-btn-nav">
-                Registrasi
-            </a>
-            
-        </div>
-    </nav>
 
-    <div class="main-content">
-        <img src="{% static 'tracking/Asset/image.png' %}" alt="Gambar Utama Landing Page" class="hero-image">
-
-        <div class="floating-box floating-box-1">
-            <h3>Sudah jadi anggota?</h3>
-            <p> Silahkan login untuk mengakses</p>
-            <a href="{% url 'Login' %}" class="floating-btn">Login</a>
-        </div>
-
-        <div class="floating-box floating-box-2">
-            <h3>Anda baru bergabung?</h3>
-            <p>Silahkan daftarkan diri anda terlebih dahulu</p>
-            <a href="{% url 'Register' %}" class="floating-btn">Registrasi</a>
-        </div>
-
+<nav class="navbar">
+    <a href="#" class="navbar-brand">IknowPala</a>
+    <div class="auth-links">
+        <a href="{% url 'Login' %}" class="login-btn-nav">Login</a>
+        <a href="{% url 'Register' %}" class="register-btn-nav">Registrasi</a>
     </div>
+</nav>
+
+<div class="main-content">
+    <div class="floating-box floating-box-1">
+        <h3>Sudah jadi anggota?</h3>
+        <p>Silahkan login untuk mengakses</p>
+        <a href="{% url 'Login' %}" class="floating-btn">Login</a>
+    </div>
+
+    <div class="floating-box floating-box-2">
+        <h3>Anda baru bergabung?</h3>
+        <p>Silahkan daftarkan diri anda terlebih dahulu</p>
+        <a href="{% url 'Register' %}" class="floating-btn">Registrasi</a>
+    </div>
+</div>
 
 </body>
 </html>

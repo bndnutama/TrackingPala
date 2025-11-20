@@ -22,7 +22,7 @@ class Farmer (models.Model):
     user            = models.OneToOneField ('ProfileUser', on_delete= models.CASCADE, related_name= 'Farmer')
     Name            = models.CharField (max_length = 100)
     FarmerGroup     = models.CharField (max_length= 100)
-    Location        = models.CharField (max_length=100)
+    Location        = models.CharField (max_length=100, default= "test")
     
 class Product (models.Model):
     Varietas        = models.CharField (max_length=100)
@@ -59,24 +59,24 @@ class History (models.Model):
 class Trader (models.Model):
     user            = models.OneToOneField ('ProfileUser', on_delete= models.CASCADE, related_name= 'Trader')
     Name            = models.CharField (max_length= 100)
-    Location        = models.CharField (max_length= 100)
+    Location        = models.CharField (max_length= 100, default= "test")
 
 #yang atas blm inggris
 class Factory (models.Model):
     user            = models.OneToOneField ('ProfileUser', on_delete= models.CASCADE, related_name= 'Factory')
     FactoryName    = models.CharField (max_length= 100)
-    Location        = models.CharField (max_length= 100)
+    Location        = models.CharField (max_length= 100, default= "test")
 
 class Distributor (models.Model):
     user            = models.OneToOneField ('ProfileUser', on_delete= models.CASCADE, related_name= 'Distributor')
     Name            = models.CharField (default= 'Distributor Baru')
-    Location        = models.CharField (max_length= 100)
+    Location        = models.CharField (max_length= 100, default= "test")
 
 
 class Customer (models.Model):
     user            = models.OneToOneField ('ProfileUser', on_delete= models.CASCADE, related_name= 'Customer')
     Name            = models.CharField (max_length=100)
-    Location        = models.CharField (max_length= 200, null= True, blank= True)
+    Location        = models.CharField (max_length= 200, default= "test")
 
 #ADDING
 class ProductFactory (models.Model):
