@@ -1,24 +1,77 @@
 <!DOCTYPE html>
-<html>
+<html lang="id">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Scan Produk</title>
     <script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #f5f7fa, #c3cfe2);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px;
+        }
+
+        h2 {
+            color: #333;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        #reader {
+            width: 300px;
+            max-width: 90vw;
+            margin-bottom: 20px;
+            border: 5px solid #fff;
+            border-radius: 15px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+        }
+
+        .note {
+            color: #555;
+            text-align: center;
+            max-width: 300px;
+        }
+
+        @media (max-width: 500px) {
+            #reader {
+                width: 90vw;
+            }
+        }
+    </style>
 </head>
 <body>
 
 <h2>Scan QR Produk</h2>
-
-<div style="width:300px" id="reader"></div>
+<div id="reader"></div>
+<p class="note">Arahkan kamera ke QR code produk untuk membuka detail.</p>
 
 <script>
 function onScanSuccess(decodedText, decodedResult) {
-    window.location.href = "/scan/<int:product_id>/" + decodedText;
+    // Asumsikan QR code berisi ID produk, misal "2"
+    const productId = decodedText.trim();
+    if(productId){
+        window.location.href = `/scan/${productId}/`;
+    }
 }
 
-var html5QrcodeScanner = new Html5QrcodeScanner(
-    "reader", { fps: 10, qrbox: 200 });
+function onScanError(errorMessage) {
+    // Bisa ditambahkan log atau notifikasi kesalahan
+    console.warn(`QR scan error: ${errorMessage}`);
+}
 
-html5QrcodeScanner.render(onScanSuccess);
+// Inisialisasi QR scanner
+var html5QrcodeScanner = new Html5QrcodeScanner(
+    "reader", 
+    { fps: 10, qrbox: 250, aspectRatio: 1.0 }
+);
+html5QrcodeScanner.render(onScanSuccess, onScanError);
 </script>
 
 </body>
