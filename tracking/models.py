@@ -35,7 +35,7 @@ class Product (models.Model):
     
     def save (self, *args, **kwargs):
         super().save(*args, **kwargs)
-        qr_info = f"http://192.168.1.39:8000/scan/{self.id}/"
+        qr_info = f"https://myapp-production.up.railway.app/scan/{self.id}/"
         qr_img = qrcode.make (qr_info)
 
         buffer = BytesIO()
