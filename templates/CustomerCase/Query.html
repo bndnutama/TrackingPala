@@ -6,66 +6,53 @@
     <title>Perjalanan Produk - {{ product.Nama }}</title>
 
     <style>
-        /* Menggunakan font yang lebih modern dan umum */
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: #f4f7f6; /* Latar belakang yang lebih terang */
+            background: #f4f7f6;
             color: #333;
             padding: 20px;
         }
-        
-        /* Judul lebih tegas */
         h2 { 
-            color: #1abc9c; /* Warna utama untuk judul besar (hijau toska) */
+            color: #1abc9c;
             border-bottom: 2px solid #1abc9c;
             padding-bottom: 10px;
             margin-bottom: 30px;
         }
         h3 { 
-            color: #2c3e50; /* Warna gelap untuk subjudul */
+            color: #2c3e50;
             margin-top: 0;
             margin-bottom: 15px;
         }
-        
-        /* Card yang lebih halus */
         .card {
             background: #fff;
             padding: 25px;
             border-radius: 12px;
-            /* Bayangan halus */
-            box-shadow: 0 4px 12px rgba(0,0,0,0.08); 
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
             margin-bottom: 30px;
-            border-left: 5px solid #1abc9c; /* Garis samping sebagai aksen */
+            border-left: 5px solid #1abc9c;
         }
-        
-        /* Timeline yang lebih ramping */
         .timeline {
-            border-left: 2px dashed #bdc3c7; /* Garis yang lebih tipis dan putus-putus */
+            border-left: 2px dashed #bdc3c7;
             padding-left: 30px;
             margin-top: 20px;
         }
-        
         .timeline-item {
             margin-bottom: 35px;
             position: relative;
             padding-bottom: 15px;
         }
-        
-        /* Penanda Lingkaran Timeline */
         .timeline-item::before {
             content: "";
             width: 14px;
             height: 14px;
             background: #1abc9c;
-            border: 3px solid #f4f7f6; /* Kontras dengan latar belakang */
+            border: 3px solid #f4f7f6;
             border-radius: 50%;
             position: absolute;
-            left: -38px; /* Menggeser agar sejajar dengan garis */
+            left: -38px;
             top: 0px;
-            z-index: 1; /* Agar terlihat di atas garis */
+            z-index: 1;
         }
-        
-        /* Judul Waktu */
         .label-title {
             font-weight: bold;
             color: #34495e;
@@ -73,26 +60,20 @@
             margin-bottom: 8px;
             display: block;
         }
-
-        /* Blok Detail Pengguna (Seller/Buyer) */
         .user-block {
-            background: #ecf0f1; /* Warna latar belakang abu-abu muda */
+            background: #ecf0f1;
             padding: 12px 18px;
             border-radius: 8px;
             margin-top: 8px;
-            border-left: 3px solid #3498db; /* Aksen biru untuk pembeda */
+            border-left: 3px solid #3498db;
             line-height: 1.4;
             font-size: 0.95em;
         }
-
-        /* Detail Tambahan (Lokasi/Waktu) */
         .user-block span {
             display: block;
             margin-top: 4px;
             color: #555;
         }
-
-        /* List User Handler */
         .card ul {
             list-style: none;
             padding-left: 0;
@@ -125,23 +106,28 @@
                 <strong>
                 {% if u.Role == "farmer" %}
                     {{ u.Farmer.Name|default:"-" }} (Petani)
-                    <br>Lokasi: {{ u.Farmer.Location|default:"Tidak tersedia" }}
+                    <br>Lokasi: <span id="loc_farm_{{ forloop.counter }}">Memuat...</span>
+                    <script>getAddressFromCoords("{{ u.Farmer.Location }}", "loc_farm_{{ forloop.counter }}");</script>
 
                 {% elif u.Role == "trader" %}
                     {{ u.Trader.Name|default:"-" }} (Pengepul)
-                    <br>Lokasi: {{ u.Trader.Location|default:"Tidak tersedia" }}
+                    <br>Lokasi: <span id="loc_trader_{{ forloop.counter }}">Memuat...</span>
+                    <script>getAddressFromCoords("{{ u.Trader.Location }}", "loc_trader_{{ forloop.counter }}");</script>
 
                 {% elif u.Role == "factory" %}
                     {{ u.Factory.FactoryName|default:"-" }} (Pabrik)
-                    <br>Lokasi: {{ u.Factory.Location|default:"Tidak tersedia" }}
+                    <br>Lokasi: <span id="loc_factory_{{ forloop.counter }}">Memuat...</span>
+                    <script>getAddressFromCoords("{{ u.Factory.Location }}", "loc_factory_{{ forloop.counter }}");</script>
 
                 {% elif u.Role == "distributor" %}
                     {{ u.Distributor.Name|default:"-" }} (Distributor)
-                    <br>Lokasi: {{ u.Distributor.Location|default:"Tidak tersedia" }}
+                    <br>Lokasi: <span id="loc_dist_{{ forloop.counter }}">Memuat...</span>
+                    <script>getAddressFromCoords("{{ u.Distributor.Location }}", "loc_dist_{{ forloop.counter }}");</script>
 
                 {% elif u.Role == "customer" %}
                     {{ u.Customer.Name|default:"-" }} (Konsumen)
-                    <br>Lokasi: {{ u.Customer.Location|default:"Tidak tersedia" }}
+                    <br>Lokasi: <span id="loc_customer_{{ forloop.counter }}">Memuat...</span>
+                    <script>getAddressFromCoords("{{ u.Customer.Location }}", "loc_customer_{{ forloop.counter }}");</script>
 
                 {% endif %}
                 </strong>
@@ -165,45 +151,65 @@
 
             <div class="user-block">
                 <strong>Dari:</strong>
-                
+
                 {% if h.Seller.Role == "farmer" %}
-                    {{ h.Seller.Farmer.Name }} ({{ h.Seller.Role }}) <span>Lokasi: {{ h.Seller.Farmer.Location|default:"-" }}</span> 
+                    {{ h.Seller.Farmer.Name }} ({{ h.Seller.Role }})
+                    <span id="seller_loc_{{ forloop.counter }}">Memuat...</span>
+                    <script>getAddressFromCoords("{{ h.Seller.Farmer.Location }}", "seller_loc_{{ forloop.counter }}");</script>
 
                 {% elif h.Seller.Role == "trader" %}
-                    {{ h.Seller.Trader.Name }} ({{ h.Seller.Role }})<span>Lokasi: {{ h.Seller.Trader.Location|default:"-" }}</span> 
+                    {{ h.Seller.Trader.Name }} ({{ h.Seller.Role }})
+                    <span id="seller_loc_{{ forloop.counter }}">Memuat...</span>
+                    <script>getAddressFromCoords("{{ h.Seller.Trader.Location }}", "seller_loc_{{ forloop.counter }}");</script>
 
                 {% elif h.Seller.Role == "factory" %}
-                    {{ h.Seller.Factory.FactoryName }} ({{ h.Seller.Role }})<span>Lokasication h.Seller.Factory.Location|default:"-" }}</span> 
+                    {{ h.Seller.Factory.FactoryName }} ({{ h.Seller.Role }})
+                    <span id="seller_loc_{{ forloop.counter }}">Memuat...</span>
+                    <script>getAddressFromCoords("{{ h.Seller.Factory.Location }}", "seller_loc_{{ forloop.counter }}");</script>
 
                 {% elif h.Seller.Role == "distributor" %}
-                    {{ h.Seller.Distributor.Name }} ({{ h.Seller.Role }})<span>Lokasi: {{ h.Seller.Distributor.Location|default:"-" }}</span> 
+                    {{ h.Seller.Distributor.Name }} ({{ h.Seller.Role }})
+                    <span id="seller_loc_{{ forloop.counter }}">Memuat...</span>
+                    <script>getAddressFromCoords("{{ h.Seller.Distributor.Location }}", "seller_loc_{{ forloop.counter }}");</script>
 
                 {% elif h.Seller.Role == "customer" %}
-                    {{ h.Seller.Customer.Name }} ({{ h.Seller.Role }})<span>Lokasi: {{ h.Seller.Customer.Location|default:"-" }}</span> 
+                    {{ h.Seller.Customer.Name }} ({{ h.Seller.Role }})
+                    <span id="seller_loc_{{ forloop.counter }}">Memuat...</span>
+                    <script>getAddressFromCoords("{{ h.Seller.Customer.Location }}", "seller_loc_{{ forloop.counter }}");</script>
 
                 {% else %}
-                Tidak diketahui
-                <span>Lokasi: -</span>
+                    Tidak diketahui <span>Lokasi: -</span>
                 {% endif %}
 
             </div>
 
             <div class="user-block" style="margin-top: 10px;">
                 <strong>Ke:</strong>
+
                 {% if h.Buyer.Role == "farmer" %}
-                    {{ h.Buyer.Farmer.Name }} ({{ h.Buyer.Role }}) <span>Lokasi: {{ h.Buyer.Farmer.Location|default:"-" }}</span>
+                    {{ h.Buyer.Farmer.Name }} ({{ h.Buyer.Role }})
+                    <span id="buyer_loc_{{ forloop.counter }}">Memuat...</span>
+                    <script>getAddressFromCoords("{{ h.Buyer.Farmer.Location }}", "buyer_loc_{{ forloop.counter }}");</script>
 
                 {% elif h.Buyer.Role == "trader" %}
-                    {{ h.Buyer.Trader.Name }} ({{ h.Buyer.Role }}) <span>Lokasi: {{ h.Buyer.Trader.Location|default:"-" }}</span>
+                    {{ h.Buyer.Trader.Name }} ({{ h.Buyer.Role }})
+                    <span id="buyer_loc_{{ forloop.counter }}">Memuat...</span>
+                    <script>getAddressFromCoords("{{ h.Buyer.Trader.Location }}", "buyer_loc_{{ forloop.counter }}");</script>
 
                 {% elif h.Buyer.Role == "factory" %}
-                    {{ h.Buyer.Factory.FactoryName }} ({{ h.Buyer.Role }}) <span>Lokasi: {{ h.Buyer.Factory.Location|default:"-" }}</span>
+                    {{ h.Buyer.Factory.FactoryName }} ({{ h.Buyer.Role }})
+                    <span id="buyer_loc_{{ forloop.counter }}">Memuat...</span>
+                    <script>getAddressFromCoords("{{ h.Buyer.Factory.Location }}", "buyer_loc_{{ forloop.counter }}");</script>
 
                 {% elif h.Buyer.Role == "distributor" %}
-                    {{ h.Buyer.Distributor.Name }} ({{ h.Buyer.Role }}) <span>Lokasi: {{ h.Buyer.Distributor.Location|default:"-" }}</span>
+                    {{ h.Buyer.Distributor.Name }} ({{ h.Buyer.Role }})
+                    <span id="buyer_loc_{{ forloop.counter }}">Memuat...</span>
+                    <script>getAddressFromCoords("{{ h.Buyer.Distributor.Location }}", "buyer_loc_{{ forloop.counter }}");</script>
 
                 {% elif h.Buyer.Role == "customer" %}
-                    {{ h.Buyer.Customer.Name }} ({{ h.Buyer.Role }}) <span>Lokasi: {{ h.Buyer.Customer.Location|default:"-" }}</span>
+                    {{ h.Buyer.Customer.Name }} ({{ h.Buyer.Role }})
+                    <span id="buyer_loc_{{ forloop.counter }}">Memuat...</span>
+                    <script>getAddressFromCoords("{{ h.Buyer.Customer.Location }}", "buyer_loc_{{ forloop.counter }}");</script>
 
                 {% else %}
                     Tidak diketahui <span>Lokasi: -</span>
@@ -216,8 +222,42 @@
             <p>Belum ada perjalanan produk.</p>
         {% endfor %}
     </div>
- <button class="btn" onclick="window.location.href='{% url dashboard_url %}'">Kembali ke Dashboard</button>
+    <button class="btn" onclick="window.location.href='{% url dashboard_url %}'">Kembali ke Dashboard</button>
 </div>
+
+<script>
+async function getAddressFromCoords(coords, elementId) {
+    if (!coords || coords.trim() === "") {
+        document.getElementById(elementId).innerText = "Lokasi tidak tersedia";
+        return;
+    }
+
+    let [lat, lon] = coords.split(",").map(x => x.trim());
+    const url = `https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lon}&format=json`;
+
+    try {
+        const controller = new AbortController();
+        const timeout = setTimeout(() => controller.abort(), 7000);
+
+        let res = await fetch(url, {
+            headers: {
+                "User-Agent": "ProductTraceApp/1.0 (contact@example.com)",  
+                "Accept-Language": "id"
+            },
+            signal: controller.signal
+        });
+
+        clearTimeout(timeout);
+
+        let data = await res.json();
+        document.getElementById(elementId).innerText = data.display_name || coords;
+
+    } catch (err) {
+        document.getElementById(elementId).innerText = "Tidak dapat memuat alamat";
+    }
+}
+</script>
+
 
 </body>
 </html>
