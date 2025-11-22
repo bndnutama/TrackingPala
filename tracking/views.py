@@ -4,6 +4,7 @@ from django.http import HttpResponse
 from .models import *
 from django.contrib.auth.decorators import login_required 
 from django.db.models import Q
+from geopy.geocoders import Nominatim
 
 #Input and Show Product
 def Input(request):
@@ -111,6 +112,26 @@ def CustomerView(request, product_id):
     product = Product.objects.get(id=product_id)
     users = ProfileUser.objects.filter(Q(Seller__Product=product)|Q(Buyer__Product=product)).distinct()
     journey = History.objects.filter(Product=product).order_by("Date")
+
+    for u in users:
+        if u.Role == "farmer":
+            u.Address = GetAddress(u.Farmer.Location)
+        elif u.Role == "trader":
+            u.Address = GetAddress(u.Trader.Location)
+        elif u.Role == "factory":
+            u.Address = GetAddress(u.Factory.Location)
+        elif u.Role == "distributor":
+            u.Address = GetAddress(u.Distributor.Location)
+        elif u.Role == "customer":
+            u.Address = GetAddress(u.Customer.Location)
+
+    for h in journey:
+            seller_loc = get_user_location(h.Seller)
+            buyer_loc = get_user_location(h.Buyer)
+            h.SellerAddress = GetAddress(seller_loc)
+            h.BuyerAddress = GetAddress(buyer_loc)
+
+
     context = {
         "product": product,
         "users": users,
@@ -118,5 +139,52 @@ def CustomerView(request, product_id):
         "dashboard_url": "CustomerDashboard"
     }
     return render(request, "CustomerCase/Query.html", context)
+
+
+
+
+#LOCATION   
+def reverse_geocode(lat, lon):
+    geolocator = Nominatim(user_agent="myapp")
+    location = geolocator.reverse((lat, lon), timeout=10)
+    if location:
+        return location.address
+    return "Alamat tidak ditemukan"
+
+def GetAddress(coords):
+    if not coords:
+        return "Lokasi tidak tersedia"
+
+    lat, lon = coords.split(",")
+    geolocator = Nominatim(user_agent="myapp")
+    
+    try:
+        location = geolocator.reverse(f"{lat}, {lon}")
+        return location.address if location else coords
+    except:
+        return coords
+
+def get_user_location(user):
+    """Mengambil lokasi sesuai role user"""
+    try:
+        role = user.Role
+
+        if role == "farmer":
+            return user.Farmer.Location
+
+        elif role == "trader":
+            return user.Trader.Location
+
+        elif role == "factory":
+            return user.Factory.Location
+
+        elif role == "distributor":
+            return user.Distributor.Location
+
+        elif role == "customer":
+            return user.Customer.Location
+
+    except:
+        return None
 
 
