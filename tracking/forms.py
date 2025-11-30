@@ -7,16 +7,16 @@ from .models import *
 class InputProduct (forms.ModelForm):
     class Meta:
         model = Product
-        fields = ['Varietas', 'Volume', 'HarvestAge', 'HarvestMethod', 'WaterContent']
+        fields = ['ProductFarmers','Varietas', 'Volume', 'Grade', 'HarvestAge', 'HarvestMethod', 'WaterContent']
         labels = {
-            'HarvestAge': 'Umur Panen',
-            'HarvestMethod': 'Metode Panen',
-            'WaterContent' : 'Kadar Air (%)',
-            'Volume': 'Volume (Kg)'
+            'HarvestAge'    : 'Umur Panen',
+            'HarvestMethod' : 'Metode Panen',
+            'WaterContent'  : 'Kadar Air (%)',
+            'Volume'        : 'Berat (Kg)',
+            'ProductFarmers': 'Produk Pertanian',
+            'Grade'         : 'Kualitas'
         }
-        
-
-
+    
 #Registration
 
 class ProfileUserRegisterForm(UserCreationForm):
@@ -35,14 +35,15 @@ class ProfileUserRegisterForm(UserCreationForm):
 class FarmerForm(forms.ModelForm):
      class Meta:
         model = Farmer
-        fields = ['Name', 'FarmerGroup', 'Location']
+        fields = ['Name', 'FarmerGroup', 'Location','AsalDesa']
         labels = {
             'Name': 'Nama Lengkap',
             'Location': 'Lokasi',
             'FarmerGroup': 'Kelompok Tani'
         }
         widgets = {
-            'Location': forms.HiddenInput()
+            'Location': forms.HiddenInput(),
+            'Name': forms.TextInput(attrs={"required": "required"})
         }
 
 

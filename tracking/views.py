@@ -5,6 +5,9 @@ from .models import *
 from django.contrib.auth.decorators import login_required 
 from django.db.models import Q
 from geopy.geocoders import Nominatim
+from functools import lru_cache
+
+
 
 #Input and Show Product
 def Input(request):
@@ -128,8 +131,8 @@ def CustomerView(request, product_id):
     for h in journey:
             seller_loc = get_user_location(h.Seller)
             buyer_loc = get_user_location(h.Buyer)
-            h.SellerAddress = GetAddress(seller_loc)
-            h.BuyerAddress = GetAddress(buyer_loc)
+            h.SellerAddress = GetAddressCached(seller_loc)
+            h.BuyerAddress = GetAddressCached(buyer_loc)
 
 
     context = {
@@ -144,8 +147,8 @@ def CustomerView(request, product_id):
 
 
 #LOCATION   
+geolocator = Nominatim(user_agent="myapp")
 def reverse_geocode(lat, lon):
-    geolocator = Nominatim(user_agent="myapp")
     location = geolocator.reverse((lat, lon), timeout=10)
     if location:
         return location.address
@@ -155,11 +158,9 @@ def GetAddress(coords):
     if not coords:
         return "Lokasi tidak tersedia"
 
-    lat, lon = coords.split(",")
-    geolocator = Nominatim(user_agent="myapp")
-    
+    lat, lon = coords.split(",")   
     try:
-        location = geolocator.reverse(f"{lat}, {lon}")
+        location = geolocator.reverse(f"{lat}, {lon}", timeout=10)
         return location.address if location else coords
     except:
         return coords
@@ -186,5 +187,9 @@ def get_user_location(user):
 
     except:
         return None
+    
+@lru_cache(maxsize=500)
+def GetAddressCached(coords):
+    return GetAddress(coords)
 
 

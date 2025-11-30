@@ -89,6 +89,7 @@
         }
         .qr-section {
              display: flex;
+             flex-direction: row; 
              align-items: center; /* Tengah vertikal di dalam QR Section */
              gap: 15px;
         }
@@ -150,6 +151,7 @@
                         <div class="qr-section">
                             <img src="{{ p.QR_Code.url }}" alt="QR {{ p.Varietas }}" title="QR Code Produk" width="80" height="80">
                             <button onclick="printQR('{{ p.QR_Code.url }}')">Cetak QR</button>
+                            <a href="{{ p.QR_Code.url }}" download="QR_Produk_{{ p.id }}.png"><button>Download QR</button>
                         </div>
                     {% endif %}
                 

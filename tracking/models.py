@@ -19,14 +19,59 @@ class ProfileUser (AbstractUser):
     
 
 class Farmer (models.Model):
+    Desa = [
+        ("Laturake", "Laturake"),
+        ("Morekao", "Morekao"),
+        ("Ariate", "Ariate"),
+        ("Kawa", "Kawa"),
+        ("Alang Saude", "Alang Saude"),
+        ("Waisala", "Waisala"),
+        ("Kamal", "Kamal"),
+        ("Buria", "Buria"),
+        ("Lokki", "Lokki"),
+        ("Nagalema", "Nagalema"),
+        ("Tehoru", "Tehoru"),
+        ("Piru", "Piru"),
+        ("Taniwel", "Taniwel"),
+        ("Leimu", "Leimu"),
+        ("Lainnya", "Lainnya"),
+    ]
     user            = models.OneToOneField ('ProfileUser', on_delete= models.CASCADE, related_name= 'Farmer')
     Name            = models.CharField (max_length = 100)
     FarmerGroup     = models.CharField (max_length= 100)
+    AsalDesa        = models.CharField (max_length= 100, choices= Desa, default= "Pilih Desa")
     Location        = models.CharField (max_length=100, default= "test")
     
 class Product (models.Model):
-    Varietas        = models.CharField (max_length=100)
-    Volume          = models.IntegerField ()
+    ProductFarmers = [
+        ("Pala Batok", "Pala Batok"),
+        ("Pala Bulat", "Pala Bulat"),
+        ("Pala Lonjong", "Pala Lonjong"),
+        ("Daging Pala", "Daging Pala"),
+        ("Fuli", "Fuli"),
+        ("Cengkeh", "Cengkeh"),
+        ("Kenari", "Kenari"),
+        ("Vanila", "Vanila"),
+        ("Kopi Tuni", "Kopi Tuni"),
+        ("Buah Pala Utuh", "Buah Pala Utuh"),
+    ]
+    Grade = [
+        ('basah', 'Basah'),
+        ('kering', 'Kering'),
+        ('campur', 'Campur'),
+        ('abcd', 'ABCD atau AB'),
+        ('bwp', 'BWP'),
+        ('ss', 'SS'),
+        ('whole', 'Whole'),
+        ('broken', 'Broken'),
+        ('tua', 'Tua'),
+        ('muda', 'Muda'),
+        ('lainnya', 'Lainnya')
+    ]
+    ProductFarmers  = models.CharField (choices= ProductFarmers, max_length=100, default= 'Tidak ada produk')
+    Varietas        = models.CharField (max_length=100, blank= True, null= True)
+    Grade           = models.CharField (max_length=20, choices= Grade, blank= True, null=True, default= 'Kualitas')
+    Volume          = models.FloatField ()
     HarvestAge      = models.CharField (max_length=100)
     HarvestMethod   = models.CharField (max_length=100)
     WaterContent    = models.CharField (max_length=100)

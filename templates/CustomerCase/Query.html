@@ -197,11 +197,11 @@
     <h2>Riwayat Perjalanan Produk</h2>
     
     <div class="card">
-        <h3>Produk: {{ product.Varietas|default:"N/A" }}</h3>
+        <h3>{{ product.Varietas|default:"N/A" }}</h3>
     </div>
 
     <div class="card">
-        <h3>Pihak yang Terlibat (Product Handlers)</h3>
+        <h3>Product Handlers</h3>
 
         <ul>
         {% for u in users %}
